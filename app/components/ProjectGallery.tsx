@@ -33,7 +33,7 @@ export default function ProjectGallery({ projects }: ProjectGalleryProps) {
             onClick={() => setActiveFilter(category)}
             className={`px-6 py-2.5 rounded-lg font-semibold transition-all ${
               activeFilter === category
-                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg scale-105'
+                ? 'bg-linear-to-r from-purple-600 to-indigo-600 text-white shadow-lg scale-105'
                 : 'bg-white text-gray-700 hover:bg-gray-50 hover:border-purple-600 border-2 border-gray-200 hover:text-purple-600'
             }`}
           >
