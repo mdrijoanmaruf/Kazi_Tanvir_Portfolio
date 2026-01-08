@@ -25,7 +25,7 @@ export default function SkillBar({ skill, percentage }: SkillBarProps) {
       </div>
       <div className="w-full bg-gray-200 rounded-full h-2.5">
         <div
-          className="bg-gradient-to-r from-purple-600 to-indigo-600 h-2.5 rounded-full transition-all duration-1000 ease-out"
+          className="bg-linear-to-r from-purple-600 to-indigo-600 h-2.5 rounded-full transition-all duration-1000 ease-out"
           style={{ width: `${width}%` }}
         ></div>
       </div>

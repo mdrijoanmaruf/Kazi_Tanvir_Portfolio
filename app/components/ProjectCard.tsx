@@ -23,7 +23,7 @@ export default function ProjectCard({ title, image, link, category }: ProjectCar
     );
   };
 
-  const getCategoryGradient = (category: string) => {
+  const getCategorylinear = (category: string) => {
     if (category === 'Machine Learning') {
       return 'from-purple-600 to-indigo-600';
     }
@@ -43,13 +43,13 @@ export default function ProjectCard({ title, image, link, category }: ProjectCar
         
         {/* Category Badge */}
         <div className="absolute top-4 right-4">
-          <div className={`flex items-center gap-2 bg-linear-to-r ${getCategoryGradient(category)} text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg`}>
+          <div className={`flex items-center gap-2 bg-linear-to-r ${getCategorylinear(category)} text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg`}>
             {getCategoryIcon(category)}
             <span>{category}</span>
           </div>
         </div>
         
-        {/* Gradient Overlay on Hover */}
+        {/* linear Overlay on Hover */}
         <div className="absolute inset-0 bg-linear-to-t from-purple-900/90 via-purple-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-8">
           <a
             href={link}

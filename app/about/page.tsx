@@ -37,7 +37,7 @@ export default function About() {
       <Header />
 
       {/* Banner */}
-      <section className="relative bg-gradient-to-br from-gray-50 via-purple-50 to-indigo-50 pt-32 pb-20 overflow-hidden">
+      <section className="relative bg-linear-to-br from-gray-50 via-purple-50 to-indigo-50 pt-32 pb-20 overflow-hidden">
         {/* Decorative Elements */}
         <div className="absolute top-20 right-10 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
         <div className="absolute bottom-20 left-10 w-72 h-72 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
@@ -49,7 +49,7 @@ export default function About() {
             </div>
             <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
               About{' '}
-              <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
                 Me
               </span>
             </h1>
@@ -72,7 +72,7 @@ export default function About() {
             <div>
               <div className="relative">
                 {/* Background Shape */}
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-2xl transform -rotate-6"></div>
+                <div className="absolute inset-0 bg-linear-to-br from-purple-600 to-indigo-600 rounded-2xl transform -rotate-6"></div>
                 
                 {/* Image Container */}
                 <div className="relative bg-white p-2 rounded-2xl shadow-2xl">
@@ -107,7 +107,7 @@ export default function About() {
               </div>
               <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
                 Hello, I&apos;m{' '}
-                <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
                   Kazi Tanvir
                 </span>
               </h2>
@@ -200,7 +200,7 @@ export default function About() {
       </section>
 
       {/* Research Interests */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 via-purple-50 to-indigo-50">
+      <section className="py-20 bg-linear-to-br from-gray-50 via-purple-50 to-indigo-50">
         <div className="max-w-screen-xl mx-auto px-4">
           <div className="text-center mb-12">
             <div className="inline-block mb-4">
@@ -208,7 +208,7 @@ export default function About() {
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
               Research{' '}
-              <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
                 Interests
               </span>
             </h2>
@@ -220,7 +220,7 @@ export default function About() {
                 key={index}
                 className="bg-white p-6 rounded-xl border border-gray-200 hover:border-purple-600 hover:shadow-lg transition-all text-center group"
               >
-                <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-gradient-to-br from-purple-100 to-indigo-100 group-hover:from-purple-600 group-hover:to-indigo-600 flex items-center justify-center transition-all">
+                <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-linear-to-br from-purple-100 to-indigo-100 group-hover:from-purple-600 group-hover:to-indigo-600 flex items-center justify-center transition-all">
                   <svg className="w-6 h-6 text-purple-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
@@ -245,7 +245,7 @@ export default function About() {
               </div>
               <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-8">
                 Professional{' '}
-                <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
                   Highlights
                 </span>
               </h2>
@@ -256,8 +256,8 @@ export default function About() {
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="bg-gradient-to-br from-purple-50 to-indigo-50 p-8 rounded-2xl border border-purple-100 hover:shadow-lg transition-shadow">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center">
+                <div className="bg-linear-to-br from-purple-50 to-indigo-50 p-8 rounded-2xl border border-purple-100 hover:shadow-lg transition-shadow">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-linear-to-br from-purple-600 to-indigo-600 flex items-center justify-center">
                     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
@@ -266,8 +266,8 @@ export default function About() {
                   <p className="text-gray-600 text-center">Years of Experience</p>
                 </div>
                 
-                <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl border border-indigo-100 hover:shadow-lg transition-shadow">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+                <div className="bg-linear-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl border border-indigo-100 hover:shadow-lg transition-shadow">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-linear-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
                     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
@@ -276,8 +276,8 @@ export default function About() {
                   <p className="text-gray-600 text-center">Projects Completed</p>
                 </div>
                 
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-2xl border border-purple-100 hover:shadow-lg transition-shadow">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
+                <div className="bg-linear-to-br from-purple-50 to-pink-50 p-8 rounded-2xl border border-purple-100 hover:shadow-lg transition-shadow">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-linear-to-br from-purple-600 to-pink-600 flex items-center justify-center">
                     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                     </svg>
@@ -286,8 +286,8 @@ export default function About() {
                   <p className="text-gray-600 text-center">AI Research Areas</p>
                 </div>
                 
-                <div className="bg-gradient-to-br from-indigo-50 to-cyan-50 p-8 rounded-2xl border border-indigo-100 hover:shadow-lg transition-shadow">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-indigo-600 to-cyan-600 flex items-center justify-center">
+                <div className="bg-linear-to-br from-indigo-50 to-cyan-50 p-8 rounded-2xl border border-indigo-100 hover:shadow-lg transition-shadow">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-linear-to-br from-indigo-600 to-cyan-600 flex items-center justify-center">
                     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>

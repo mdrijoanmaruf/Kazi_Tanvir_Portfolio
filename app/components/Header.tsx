@@ -37,7 +37,7 @@ export default function Header() {
             <div className="w-10 h-10 rounded-lg bg-linear-to-br from-purple-600 to-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-md group-hover:shadow-lg transition-shadow">
               KT
             </div>
-            <span className="text-xl font-bold text-gray-900 hidden sm:block">
+            <span className="text-xl font-bold text-gray-900">
               Kazi Tanvir
             </span>
           </Link>

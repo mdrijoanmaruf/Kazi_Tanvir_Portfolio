@@ -21,7 +21,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight">
             My Latest{' '}
-            <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
               Featured Projects
             </span>
           </h2>
