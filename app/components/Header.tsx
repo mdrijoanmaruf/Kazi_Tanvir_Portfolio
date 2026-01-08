@@ -27,14 +27,14 @@ export default function Header() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-md">
-      <div className="max-w-screen-xl mx-auto px-4 py-3">
+      <div className="max-w-7xl mx-auto px-4 py-3">
         <div className="flex items-center justify-between text-gray-900">
           {/* Logo/Brand */}
           <Link
             href="/"
             className="mr-4 cursor-pointer py-1.5 lg:ml-2 flex items-center gap-3 group"
           >
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-md group-hover:shadow-lg transition-shadow">
+            <div className="w-10 h-10 rounded-lg bg-linear-to-br from-purple-600 to-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-md group-hover:shadow-lg transition-shadow">
               KT
             </div>
             <span className="text-xl font-bold text-gray-900 hidden sm:block">
@@ -80,7 +80,7 @@ export default function Header() {
               href="https://github.com/KaziTanvir"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg hover:shadow-lg transition-all"
+              className="px-4 py-2 text-sm font-medium text-white bg-linear-to-r from-purple-600 to-indigo-600 rounded-lg hover:shadow-lg transition-all"
             >
               GitHub Profile
             </a>
@@ -146,7 +146,7 @@ export default function Header() {
               href="https://github.com/KaziTanvir"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full px-4 py-2.5 text-sm font-medium text-center text-white bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg hover:shadow-lg transition-all"
+              className="w-full px-4 py-2.5 text-sm font-medium text-center text-white bg-linear-to-r from-purple-600 to-indigo-600 rounded-lg hover:shadow-lg transition-all"
             >
               GitHub Profile
             </a>
