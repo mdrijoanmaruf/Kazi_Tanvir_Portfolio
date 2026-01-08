@@ -106,8 +106,11 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}
             <p className="text-sm text-gray-600">
-              © {currentYear} Kazi Tanvir. Made with{' '}
-              <span className="text-red-500">❤</span> using Next.js & Tailwind CSS
+              © {currentYear} <span className="text-purple-600 hover:text-indigo-600 font-semibold transition-colors">Kazi Tanvir.</span> All rights reserved. <br />Developed with{' '}
+              <span className="text-red-500"></span> by{' '}
+              <a href="https://rijoan.com" target="_blank" rel="noopener noreferrer" className="text-purple-600 hover:text-indigo-600 font-semibold transition-colors">
+                Md Rijoan Maruf
+              </a>
             </p>
 
             {/* Social Links */}
