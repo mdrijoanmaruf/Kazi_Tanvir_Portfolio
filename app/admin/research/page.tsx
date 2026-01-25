@@ -183,7 +183,7 @@ export default function ResearchPage() {
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-2 lg:flex-shrink-0">
+                  <div className="flex items-center gap-2 lg:shrink-0">
                     <a
                       href={`/admin/research/edit/${item._id}`}
                       className="inline-flex items-center gap-1 px-3 py-2 text-xs font-medium text-purple-700 bg-purple-100 rounded-lg hover:bg-purple-200 transition-colors"
