@@ -22,6 +22,8 @@ export default function Header() {
   const navLinks = [
     { href: '/', label: 'Home', icon: '🏠' },
     { href: '/about', label: 'About', icon: '👤' },
+    { href: '/projects', label: 'Projects', icon: '🚀' },
+    { href: '/research', label: 'Research', icon: '📚' },
     { href: '/contact', label: 'Contact Us', icon: '📧' },
   ];
 
