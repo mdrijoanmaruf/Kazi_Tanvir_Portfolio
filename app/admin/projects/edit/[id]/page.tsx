@@ -1,15 +1,19 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState, useRef } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import Image from 'next/image';
 import Swal from 'sweetalert2';
 import { uploadToImgBB } from '@/lib/imgbb';
 
-export default function AddProjectPage() {
+export default function EditProjectPage() {
   const router = useRouter();
+  const params = useParams();
+  const projectId = params.id as string;
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [loading, setLoading] = useState(false);
+  
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -22,7 +26,51 @@ export default function AddProjectPage() {
     tags: '',
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  useEffect(() => {
+    fetchProject();
+  }, [projectId]);
+
+  const fetchProject = async () => {
+    try {
+      const response = await fetch(`/api/admin/projects/${projectId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setFormData({
+          title: data.project.title || '',
+          description: data.project.description || '',
+          image: data.project.image || '',
+          link: data.project.link || '',
+          github: data.project.github || '',
+          category: data.project.category || 'Web Development',
+          tags: data.project.tags?.join(', ') || '',
+        });
+        if (data.project.image) {
+          setImagePreview(data.project.image);
+        }
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Not Found',
+          text: 'Project not found',
+          confirmButtonColor: '#7c3aed',
+        });
+        router.push('/admin/projects');
+      }
+    } catch (error) {
+      console.error('Failed to fetch project:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to fetch project',
+        confirmButtonColor: '#7c3aed',
+      });
+      router.push('/admin/projects');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -33,7 +81,6 @@ export default function AddProjectPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Check file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       Swal.fire({
         icon: 'error',
@@ -44,7 +91,6 @@ export default function AddProjectPage() {
       return;
     }
 
-    // Check file type
     if (!file.type.startsWith('image/')) {
       Swal.fire({
         icon: 'error',
@@ -58,27 +104,23 @@ export default function AddProjectPage() {
     setUploading(true);
     
     try {
-      // Show preview immediately
       const reader = new FileReader();
       reader.onload = (e) => {
         setImagePreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
 
-      // Upload to ImgBB
       const imageUrl = await uploadToImgBB(file);
       setFormData({ ...formData, image: imageUrl });
       
       Swal.fire({
         icon: 'success',
         title: 'Image Uploaded!',
-        text: 'Your image has been uploaded successfully',
         timer: 1500,
         showConfirmButton: false,
       });
     } catch (error) {
       console.error('Upload failed:', error);
-      setImagePreview(null);
       Swal.fire({
         icon: 'error',
         title: 'Upload Failed',
@@ -100,11 +142,11 @@ export default function AddProjectPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSaving(true);
 
     try {
-      const response = await fetch('/api/admin/projects', {
-        method: 'POST',
+      const response = await fetch(`/api/admin/projects/${projectId}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -117,8 +159,8 @@ export default function AddProjectPage() {
       if (response.ok) {
         await Swal.fire({
           icon: 'success',
-          title: 'Project Added!',
-          text: 'Your project has been created successfully',
+          title: 'Project Updated!',
+          text: 'Your project has been updated successfully',
           confirmButtonColor: '#7c3aed',
         });
         router.push('/admin/projects');
@@ -127,22 +169,33 @@ export default function AddProjectPage() {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: data.error || 'Failed to add project',
+          text: data.error || 'Failed to update project',
           confirmButtonColor: '#7c3aed',
         });
       }
     } catch (error) {
-      console.error('Failed to add project:', error);
+      console.error('Failed to update project:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Failed to add project. Please try again.',
+        text: 'Failed to update project. Please try again.',
         confirmButtonColor: '#7c3aed',
       });
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="text-gray-500 mt-4">Loading project...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -157,8 +210,8 @@ export default function AddProjectPage() {
           </svg>
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Add New Project</h1>
-          <p className="text-gray-600 mt-1">Create a new portfolio project</p>
+          <h1 className="text-2xl font-bold text-gray-900">Edit Project</h1>
+          <p className="text-gray-600 mt-1">Update project details</p>
         </div>
       </div>
 
@@ -169,7 +222,6 @@ export default function AddProjectPage() {
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-3">Project Image</label>
             <div className="flex flex-col sm:flex-row gap-6">
-              {/* Preview */}
               <div className="relative w-full sm:w-64 h-48 bg-gray-100 rounded-xl overflow-hidden border-2 border-dashed border-gray-300">
                 {imagePreview || formData.image ? (
                   <>
@@ -204,7 +256,6 @@ export default function AddProjectPage() {
                 )}
               </div>
 
-              {/* Upload Button */}
               <div className="flex-1 flex flex-col justify-center">
                 <input
                   ref={fileInputRef}
@@ -221,7 +272,7 @@ export default function AddProjectPage() {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                   </svg>
-                  {uploading ? 'Uploading...' : 'Upload Image'}
+                  {uploading ? 'Uploading...' : 'Change Image'}
                 </label>
                 <p className="text-xs text-gray-500 mt-2">PNG, JPG, GIF up to 5MB</p>
               </div>
@@ -229,7 +280,6 @@ export default function AddProjectPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Title */}
             <div className="lg:col-span-2">
               <label className="block text-sm font-semibold text-gray-700 mb-2">Project Title <span className="text-red-500">*</span></label>
               <input
@@ -243,13 +293,12 @@ export default function AddProjectPage() {
               />
             </div>
 
-            {/* Category */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Category</label>
               <select
                 name="category"
                 value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                onChange={handleChange}
                 className="block w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all bg-white"
               >
                 <option value="Web Development">Web Development</option>
@@ -261,7 +310,6 @@ export default function AddProjectPage() {
               </select>
             </div>
 
-            {/* Tags */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Tags</label>
               <input
@@ -275,7 +323,6 @@ export default function AddProjectPage() {
               <p className="text-xs text-gray-500 mt-1">Separate tags with commas</p>
             </div>
 
-            {/* Description */}
             <div className="lg:col-span-2">
               <label className="block text-sm font-semibold text-gray-700 mb-2">Description <span className="text-red-500">*</span></label>
               <textarea
@@ -289,7 +336,6 @@ export default function AddProjectPage() {
               />
             </div>
 
-            {/* Live Demo URL */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Live Demo URL</label>
               <input
@@ -302,7 +348,6 @@ export default function AddProjectPage() {
               />
             </div>
 
-            {/* GitHub URL */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">GitHub URL</label>
               <input
@@ -316,14 +361,13 @@ export default function AddProjectPage() {
             </div>
           </div>
 
-          {/* Actions */}
           <div className="flex items-center gap-4 pt-6 border-t border-gray-200">
             <button
               type="submit"
-              disabled={loading || uploading}
+              disabled={saving || uploading}
               className="inline-flex items-center gap-2 px-8 py-3 bg-linear-to-r from-purple-600 to-indigo-600 text-white text-sm font-semibold rounded-xl hover:shadow-lg disabled:opacity-50 transition-all"
             >
-              {loading ? (
+              {saving ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   Saving...
@@ -333,7 +377,7 @@ export default function AddProjectPage() {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  Save Project
+                  Update Project
                 </>
               )}
             </button>
@@ -350,4 +394,3 @@ export default function AddProjectPage() {
     </div>
   );
 }
-

@@ -1,26 +1,77 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState, useRef } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import Image from 'next/image';
 import Swal from 'sweetalert2';
 import { uploadToImgBB } from '@/lib/imgbb';
 
-export default function AddProjectPage() {
+export default function EditResearchPage() {
   const router = useRouter();
+  const params = useParams();
+  const researchId = params.id as string;
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [loading, setLoading] = useState(false);
+  
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    image: '',
+    abstract: '',
     link: '',
-    github: '',
-    category: 'Web Development',
-    tags: '',
+    publishedAt: '',
+    journal: '',
+    authors: '',
+    image: '',
   });
+
+  useEffect(() => {
+    fetchResearch();
+  }, [researchId]);
+
+  const fetchResearch = async () => {
+    try {
+      const response = await fetch(`/api/admin/research/${researchId}`);
+      if (response.ok) {
+        const data = await response.json();
+        const research = data.research;
+        setFormData({
+          title: research.title || '',
+          description: research.description || '',
+          abstract: research.abstract || '',
+          link: research.link || '',
+          publishedAt: research.publishedAt ? new Date(research.publishedAt).toISOString().split('T')[0] : '',
+          journal: research.journal || '',
+          authors: research.authors?.join(', ') || '',
+          image: research.image || '',
+        });
+        if (research.image) {
+          setImagePreview(research.image);
+        }
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Not Found',
+          text: 'Research not found',
+          confirmButtonColor: '#7c3aed',
+        });
+        router.push('/admin/research');
+      }
+    } catch (error) {
+      console.error('Failed to fetch research:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to fetch research',
+        confirmButtonColor: '#7c3aed',
+      });
+      router.push('/admin/research');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -33,7 +84,6 @@ export default function AddProjectPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Check file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       Swal.fire({
         icon: 'error',
@@ -44,7 +94,6 @@ export default function AddProjectPage() {
       return;
     }
 
-    // Check file type
     if (!file.type.startsWith('image/')) {
       Swal.fire({
         icon: 'error',
@@ -58,27 +107,23 @@ export default function AddProjectPage() {
     setUploading(true);
     
     try {
-      // Show preview immediately
       const reader = new FileReader();
       reader.onload = (e) => {
         setImagePreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
 
-      // Upload to ImgBB
       const imageUrl = await uploadToImgBB(file);
       setFormData({ ...formData, image: imageUrl });
       
       Swal.fire({
         icon: 'success',
         title: 'Image Uploaded!',
-        text: 'Your image has been uploaded successfully',
         timer: 1500,
         showConfirmButton: false,
       });
     } catch (error) {
       console.error('Upload failed:', error);
-      setImagePreview(null);
       Swal.fire({
         icon: 'error',
         title: 'Upload Failed',
@@ -100,49 +145,60 @@ export default function AddProjectPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSaving(true);
 
     try {
-      const response = await fetch('/api/admin/projects', {
-        method: 'POST',
+      const response = await fetch(`/api/admin/research/${researchId}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...formData,
-          tags: formData.tags.split(',').map((tag) => tag.trim()).filter(Boolean),
+          authors: formData.authors.split(',').map((author) => author.trim()).filter(Boolean),
         }),
       });
 
       if (response.ok) {
         await Swal.fire({
           icon: 'success',
-          title: 'Project Added!',
-          text: 'Your project has been created successfully',
+          title: 'Research Updated!',
+          text: 'Your research has been updated successfully',
           confirmButtonColor: '#7c3aed',
         });
-        router.push('/admin/projects');
+        router.push('/admin/research');
       } else {
         const data = await response.json();
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: data.error || 'Failed to add project',
+          text: data.error || 'Failed to update research',
           confirmButtonColor: '#7c3aed',
         });
       }
     } catch (error) {
-      console.error('Failed to add project:', error);
+      console.error('Failed to update research:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Failed to add project. Please try again.',
+        text: 'Failed to update research. Please try again.',
         confirmButtonColor: '#7c3aed',
       });
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="text-gray-500 mt-4">Loading research...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -157,8 +213,8 @@ export default function AddProjectPage() {
           </svg>
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Add New Project</h1>
-          <p className="text-gray-600 mt-1">Create a new portfolio project</p>
+          <h1 className="text-2xl font-bold text-gray-900">Edit Research</h1>
+          <p className="text-gray-600 mt-1">Update research details</p>
         </div>
       </div>
 
@@ -167,9 +223,8 @@ export default function AddProjectPage() {
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Image Upload Section */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-3">Project Image</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-3">Research Image / Cover</label>
             <div className="flex flex-col sm:flex-row gap-6">
-              {/* Preview */}
               <div className="relative w-full sm:w-64 h-48 bg-gray-100 rounded-xl overflow-hidden border-2 border-dashed border-gray-300">
                 {imagePreview || formData.image ? (
                   <>
@@ -197,14 +252,13 @@ export default function AddProjectPage() {
                 ) : (
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
                     <svg className="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     <span className="text-sm">No image</span>
                   </div>
                 )}
               </div>
 
-              {/* Upload Button */}
               <div className="flex-1 flex flex-col justify-center">
                 <input
                   ref={fileInputRef}
@@ -221,7 +275,7 @@ export default function AddProjectPage() {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                   </svg>
-                  {uploading ? 'Uploading...' : 'Upload Image'}
+                  {uploading ? 'Uploading...' : 'Change Image'}
                 </label>
                 <p className="text-xs text-gray-500 mt-2">PNG, JPG, GIF up to 5MB</p>
               </div>
@@ -229,9 +283,8 @@ export default function AddProjectPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Title */}
             <div className="lg:col-span-2">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Project Title <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Research Title <span className="text-red-500">*</span></label>
               <input
                 type="text"
                 name="title"
@@ -239,91 +292,91 @@ export default function AddProjectPage() {
                 onChange={handleChange}
                 required
                 className="block w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                placeholder="Enter project title"
+                placeholder="Research Paper Title"
               />
             </div>
 
-            {/* Category */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Category</label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="block w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all bg-white"
-              >
-                <option value="Web Development">Web Development</option>
-                <option value="Machine Learning">Machine Learning</option>
-                <option value="Mobile App">Mobile App</option>
-                <option value="Data Science">Data Science</option>
-                <option value="AI/ML">AI/ML</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-
-            {/* Tags */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Tags</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Journal / Conference</label>
               <input
                 type="text"
-                name="tags"
-                value={formData.tags}
+                name="journal"
+                value={formData.journal}
                 onChange={handleChange}
                 className="block w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                placeholder="React, TypeScript, Node.js"
+                placeholder="IEEE, Nature, ACM, etc."
               />
-              <p className="text-xs text-gray-500 mt-1">Separate tags with commas</p>
             </div>
 
-            {/* Description */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Publication Date</label>
+              <input
+                type="date"
+                name="publishedAt"
+                value={formData.publishedAt}
+                onChange={handleChange}
+                className="block w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+              />
+            </div>
+
             <div className="lg:col-span-2">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Description <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Short Description <span className="text-red-500">*</span></label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
                 required
-                rows={4}
+                rows={2}
                 className="block w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
-                placeholder="Describe your project..."
+                placeholder="Brief description of the research..."
               />
             </div>
 
-            {/* Live Demo URL */}
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Abstract</label>
+              <textarea
+                name="abstract"
+                value={formData.abstract}
+                onChange={handleChange}
+                rows={5}
+                className="block w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
+                placeholder="Full abstract of the research paper..."
+              />
+            </div>
+
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Live Demo URL</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Paper URL / DOI</label>
               <input
                 type="url"
                 name="link"
                 value={formData.link}
                 onChange={handleChange}
                 className="block w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                placeholder="https://demo.example.com"
+                placeholder="https://doi.org/..."
               />
             </div>
 
-            {/* GitHub URL */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">GitHub URL</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Authors</label>
               <input
-                type="url"
-                name="github"
-                value={formData.github}
+                type="text"
+                name="authors"
+                value={formData.authors}
                 onChange={handleChange}
                 className="block w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                placeholder="https://github.com/username/repo"
+                placeholder="Kazi Tanvir, John Doe, Jane Smith"
               />
+              <p className="text-xs text-gray-500 mt-1">Separate authors with commas</p>
             </div>
           </div>
 
-          {/* Actions */}
           <div className="flex items-center gap-4 pt-6 border-t border-gray-200">
             <button
               type="submit"
-              disabled={loading || uploading}
+              disabled={saving || uploading}
               className="inline-flex items-center gap-2 px-8 py-3 bg-linear-to-r from-purple-600 to-indigo-600 text-white text-sm font-semibold rounded-xl hover:shadow-lg disabled:opacity-50 transition-all"
             >
-              {loading ? (
+              {saving ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   Saving...
@@ -333,7 +386,7 @@ export default function AddProjectPage() {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  Save Project
+                  Update Research
                 </>
               )}
             </button>
@@ -350,4 +403,3 @@ export default function AddProjectPage() {
     </div>
   );
 }
-

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
+import Swal from 'sweetalert2';
 
 interface User {
   _id: string;
@@ -36,7 +37,22 @@ export default function UsersPage() {
     }
   };
 
-  const handleRoleChange = async (userId: string, newRole: string) => {
+  const handleRoleChange = async (userId: string, userName: string, newRole: string) => {
+    const roleLabel = newRole === 'admin' ? 'Admin' : 'User';
+    const action = newRole === 'admin' ? 'promote' : 'demote';
+    
+    const result = await Swal.fire({
+      icon: 'question',
+      title: `${newRole === 'admin' ? 'Make Admin' : 'Remove Admin'}?`,
+      text: `Are you sure you want to ${action} "${userName}" to ${roleLabel}?`,
+      showCancelButton: true,
+      confirmButtonColor: '#7c3aed',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: `Yes, ${action}!`,
+    });
+
+    if (!result.isConfirmed) return;
+
     setActionLoading(userId);
     try {
       const response = await fetch(`/api/admin/users/${userId}/role`, {
@@ -51,20 +67,47 @@ export default function UsersPage() {
         setUsers(users.map((user) =>
           user._id === userId ? { ...user, role: newRole } : user
         ));
+        Swal.fire({
+          icon: 'success',
+          title: 'Role Updated!',
+          text: `${userName} is now ${newRole === 'admin' ? 'an Admin' : 'a User'}`,
+          timer: 1500,
+          showConfirmButton: false,
+        });
       } else {
         const data = await response.json();
-        alert(data.error || 'Failed to update role');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: data.error || 'Failed to update role',
+          confirmButtonColor: '#7c3aed',
+        });
       }
     } catch (error) {
       console.error('Failed to update role:', error);
-      alert('Failed to update role');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to update role',
+        confirmButtonColor: '#7c3aed',
+      });
     } finally {
       setActionLoading(null);
     }
   };
 
-  const handleDeleteUser = async (userId: string) => {
-    if (!confirm('Are you sure you want to delete this user?')) return;
+  const handleDeleteUser = async (userId: string, userName: string) => {
+    const result = await Swal.fire({
+      icon: 'warning',
+      title: 'Delete User?',
+      text: `Are you sure you want to delete "${userName}"? This action cannot be undone!`,
+      showCancelButton: true,
+      confirmButtonColor: '#dc2626',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, delete!',
+    });
+
+    if (!result.isConfirmed) return;
 
     setActionLoading(userId);
     try {
@@ -74,13 +117,30 @@ export default function UsersPage() {
 
       if (response.ok) {
         setUsers(users.filter((user) => user._id !== userId));
+        Swal.fire({
+          icon: 'success',
+          title: 'Deleted!',
+          text: 'User has been deleted successfully',
+          timer: 1500,
+          showConfirmButton: false,
+        });
       } else {
         const data = await response.json();
-        alert(data.error || 'Failed to delete user');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: data.error || 'Failed to delete user',
+          confirmButtonColor: '#7c3aed',
+        });
       }
     } catch (error) {
       console.error('Failed to delete user:', error);
-      alert('Failed to delete user');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to delete user',
+        confirmButtonColor: '#7c3aed',
+      });
     } finally {
       setActionLoading(null);
     }
@@ -205,7 +265,7 @@ export default function UsersPage() {
                           <>
                             {user.role === 'admin' ? (
                               <button
-                                onClick={() => handleRoleChange(user._id, 'user')}
+                                onClick={() => handleRoleChange(user._id, user.name, 'user')}
                                 disabled={actionLoading === user._id}
                                 className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-100 rounded-lg hover:bg-orange-200 disabled:opacity-50 transition-colors"
                               >
@@ -220,7 +280,7 @@ export default function UsersPage() {
                               </button>
                             ) : (
                               <button
-                                onClick={() => handleRoleChange(user._id, 'admin')}
+                                onClick={() => handleRoleChange(user._id, user.name, 'admin')}
                                 disabled={actionLoading === user._id}
                                 className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-100 rounded-lg hover:bg-purple-200 disabled:opacity-50 transition-colors"
                               >
@@ -235,7 +295,7 @@ export default function UsersPage() {
                               </button>
                             )}
                             <button
-                              onClick={() => handleDeleteUser(user._id)}
+                              onClick={() => handleDeleteUser(user._id, user.name)}
                               disabled={actionLoading === user._id}
                               className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 disabled:opacity-50 transition-colors"
                             >

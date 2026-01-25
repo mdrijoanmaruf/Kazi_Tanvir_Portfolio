@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Swal from 'sweetalert2';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -14,32 +15,37 @@ export default function RegisterPage() {
     confirmPassword: '',
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
-    setErrorMessage('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setErrorMessage('');
-    setSuccessMessage('');
 
     // Validation
     if (formData.password !== formData.confirmPassword) {
-      setErrorMessage('Passwords do not match');
+      Swal.fire({
+        icon: 'error',
+        title: 'Password Mismatch',
+        text: 'Passwords do not match',
+        confirmButtonColor: '#7c3aed',
+      });
       setIsLoading(false);
       return;
     }
 
     if (formData.password.length < 6) {
-      setErrorMessage('Password must be at least 6 characters');
+      Swal.fire({
+        icon: 'error',
+        title: 'Invalid Password',
+        text: 'Password must be at least 6 characters',
+        confirmButtonColor: '#7c3aed',
+      });
       setIsLoading(false);
       return;
     }
@@ -60,15 +66,28 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setErrorMessage(data.error || 'Registration failed');
+        Swal.fire({
+          icon: 'error',
+          title: 'Registration Failed',
+          text: data.error || 'Registration failed',
+          confirmButtonColor: '#7c3aed',
+        });
       } else {
-        setSuccessMessage('Account created successfully! Redirecting to login...');
-        setTimeout(() => {
-          router.push('/login');
-        }, 2000);
+        await Swal.fire({
+          icon: 'success',
+          title: 'Account Created!',
+          text: 'Your account has been created successfully',
+          confirmButtonColor: '#7c3aed',
+        });
+        router.push('/login');
       }
     } catch (err) {
-      setErrorMessage('An unexpected error occurred');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An unexpected error occurred',
+        confirmButtonColor: '#7c3aed',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -94,50 +113,6 @@ export default function RegisterPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow-xl rounded-2xl sm:px-10 border border-gray-100">
-          {/* Error Message */}
-          {errorMessage && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
-              <div className="flex items-center gap-2">
-                <svg
-                  className="w-5 h-5 text-red-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <p className="text-sm text-red-700">{errorMessage}</p>
-              </div>
-            </div>
-          )}
-
-          {/* Success Message */}
-          {successMessage && (
-            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl">
-              <div className="flex items-center gap-2">
-                <svg
-                  className="w-5 h-5 text-green-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                <p className="text-sm text-green-700">{successMessage}</p>
-              </div>
-            </div>
-          )}
-
           <form className="space-y-5" onSubmit={handleSubmit}>
             {/* Name Field */}
             <div>

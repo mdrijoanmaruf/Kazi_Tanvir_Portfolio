@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { title, description, abstract, link, publishedAt, journal, authors } = body;
+    const { title, description, abstract, link, publishedAt, journal, authors, image } = body;
 
     if (!title || !description) {
       return NextResponse.json({ error: 'Title and description are required' }, { status: 400 });
@@ -49,6 +49,7 @@ export async function POST(req: NextRequest) {
       publishedAt: publishedAt ? new Date(publishedAt) : null,
       journal: journal || '',
       authors: authors || [],
+      image: image || '',
       createdAt: new Date(),
       updatedAt: new Date(),
     });

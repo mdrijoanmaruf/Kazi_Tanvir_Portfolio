@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { title, description, image, link, github, tags } = body;
+    const { title, description, image, link, github, category, tags } = body;
 
     if (!title || !description) {
       return NextResponse.json({ error: 'Title and description are required' }, { status: 400 });
@@ -47,6 +47,7 @@ export async function POST(req: NextRequest) {
       image: image || '',
       link: link || '',
       github: github || '',
+      category: category || 'Web Development',
       tags: tags || [],
       createdAt: new Date(),
       updatedAt: new Date(),
