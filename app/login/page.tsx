@@ -273,7 +273,7 @@ export default function LoginPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <Suspense fallback={
-          <div className="bg-white py-8 px-4 shadow-xl rounded-2xl sm:px-10 border border-gray-100 flex items-center justify-center min-h-[400px]">
+          <div className="bg-white py-8 px-4 shadow-xl rounded-2xl sm:px-10 border border-gray-100 flex items-center justify-center min-h-100">
             <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
           </div>
         }>

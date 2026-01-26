@@ -1,20 +1,46 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import ProjectGallery from "./ProjectGallery";
 
 interface Project {
+  _id: string;
   title: string;
   image: string;
-  link: string;
+  link?: string;
+  description: string;
   category: string;
+  createdAt: string;
 }
 
-interface ProjectsSectionProps {
-  projects: Project[];
-}
+export default function ProjectsSection() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export default function ProjectsSection({ projects }: ProjectsSectionProps) {
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('/api/projects');
+        if (response.ok) {
+          const data = await response.json();
+          // Sort by latest first
+          const sortedProjects = data.projects.sort((a: Project, b: Project) => 
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+          setProjects(sortedProjects);
+        }
+      } catch (error) {
+        console.error('Failed to fetch projects:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
   return (
     <section id="projects" className="py-12 sm:py-16 md:py-20 bg-white">
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
           <div className="inline-block mb-3 sm:mb-4">
             <span className="text-xs sm:text-sm font-semibold text-purple-600 uppercase tracking-wider">Portfolio</span>
@@ -31,7 +57,13 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
           </p>
         </div>
         
-        <ProjectGallery projects={projects} />
+        {loading ? (
+          <div className="text-center py-12">
+            <p className="text-gray-600">Loading projects...</p>
+          </div>
+        ) : (
+          <ProjectGallery projects={projects} />
+        )}
         
         <div className="text-center mt-10 sm:mt-12 md:mt-16">
           <a

@@ -84,7 +84,7 @@ export default async function ResearchPage() {
                   <div className="md:flex">
                     {/* Image */}
                     {item.image && (
-                      <div className="md:w-72 md:flex-shrink-0">
+                      <div className="md:w-72 md:shrink-0">
                         <div className="relative h-48 md:h-full w-full">
                           <Image
                             src={item.image}

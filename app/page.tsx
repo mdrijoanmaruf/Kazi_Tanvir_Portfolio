@@ -21,43 +21,7 @@ export default function Home() {
     { name: "Neural Networks", percentage: 80 },
   ];
 
-  const projects = [
-    {
-      title: "Breast Cancer Prediction Using SVM",
-      image: "/Resource/1.png",
-      link: "https://github.com/KaziTanvir/Build-a-Breast-Cancer-Prediction-Model-using-SVM",
-      category: "Machine Learning"
-    },
-    {
-      title: "Signature Verification using VGG-19",
-      image: "/Resource/2.png",
-      link: "https://github.com/KaziTanvir/signature-verification-using-VGG-19",
-      category: "Machine Learning"
-    },
-    {
-      title: "Fake news classifier using LSTM",
-      image: "/Resource/3.png",
-      link: "https://github.com/KaziTanvir/Fake-news-classifier-using-LSTM",
-      category: "Machine Learning"
-    },
-    {
-      title: "Handwritten Digit Recognition Using Neural Networks",
-      image: "/Resource/4.png",
-      link: "https://github.com/KaziTanvir/Handwritten-Digit-Recognition-Using-Neural-Networks",
-      category: "Machine Learning"
-    },
-    {
-      title: "Handwritten Digits recognition using Multi Task Models",
-      image: "/Resource/5.png",
-      link: "https://github.com/KaziTanvir/Handwritten-Digits-recognition-using-Multi-Task-Models",
-      category: "Machine Learning"
-    },
-    {
-      title: "Tweet Emotion Recognition using LSTM",
-      image: "/Resource/13.png",
-      link: "https://github.com/KaziTanvir/Tweet-Emotion-Recognition-using-LSTM",
-      category: "Machine Learning"
-    },
+  const interests = [
     {
       title: "Neural Style Transfer",
       image: "/Resource/6.png",
@@ -96,7 +60,7 @@ export default function Home() {
     },
   ];
 
-  const interests = [
+  const interestsList = [
     "Artificial Intelligence",
     "Deep Learning",
     "Machine Learning",
@@ -116,7 +80,7 @@ export default function Home() {
       <HeroSection />
       <AboutSection skills={skills} />
       <EducationSection />
-      <ProjectsSection projects={projects} />
+      <ProjectsSection />
 
       <Footer />
     </div>

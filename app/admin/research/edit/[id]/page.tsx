@@ -191,7 +191,7 @@ export default function EditResearchPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-gray-500 mt-4">Loading research...</p>
@@ -364,7 +364,7 @@ export default function EditResearchPage() {
                 value={formData.authors}
                 onChange={handleChange}
                 className="block w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                placeholder="Kazi Tanvir, John Doe, Jane Smith"
+                placeholder="Kazi Tanvir"
               />
               <p className="text-xs text-gray-500 mt-1">Separate authors with commas</p>
             </div>
