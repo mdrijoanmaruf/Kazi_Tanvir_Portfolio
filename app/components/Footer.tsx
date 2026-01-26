@@ -1,5 +1,54 @@
+'use client';
+
+import { useState } from 'react';
+import Swal from 'sweetalert2';
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setLoading(true);
+    try {
+      const response = await fetch('/api/subscribers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Subscribed!',
+          text: 'Thank you for subscribing to our newsletter.',
+          confirmButtonColor: '#7c3aed',
+        });
+        setEmail('');
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops!',
+          text: data.error || 'Failed to subscribe',
+          confirmButtonColor: '#7c3aed',
+        });
+      }
+    } catch {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Something went wrong. Please try again.',
+        confirmButtonColor: '#7c3aed',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const quickLinks = [
     { name: 'Home', href: '/' },
@@ -86,17 +135,21 @@ export default function Footer() {
             <p className="text-gray-600 text-sm mb-4">
               Subscribe to get latest updates and insights.
             </p>
-            <form className="space-y-2">
+            <form onSubmit={handleSubscribe} className="space-y-2">
               <input
                 type="email"
                 placeholder="Your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
                 className="w-full px-4 py-2.5 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
               />
               <button
                 type="submit"
-                className="w-full px-4 py-2.5 text-sm font-medium text-white bg-linear-to-r from-purple-600 to-indigo-600 rounded-lg hover:shadow-lg transition-all"
+                disabled={loading}
+                className="w-full px-4 py-2.5 text-sm font-medium text-white bg-linear-to-r from-purple-600 to-indigo-600 rounded-lg hover:shadow-lg transition-all disabled:opacity-50"
               >
-                Subscribe
+                {loading ? 'Subscribing...' : 'Subscribe'}
               </button>
             </form>
           </div>

@@ -72,16 +72,15 @@ export default function About() {
             <div>
               <div className="relative">
                 {/* Background Shape */}
-                <div className="absolute inset-0 bg-linear-to-br from-purple-600 to-indigo-600 rounded-2xl transform -rotate-6"></div>
+                <div className="absolute w-80 h-80 sm:w-96 sm:h-96 lg:w-96 lg:h-96 bg-linear-to-br from-purple-600 to-indigo-600 rounded-2xl transform -rotate-6 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
                 
-                {/* Image Container */}
-                <div className="relative bg-white p-2 rounded-2xl shadow-2xl">
+                {/* Image Container (fixed size, cropped & centered) */}
+                <div className="relative bg-white p-2 rounded-2xl shadow-2xl w-80 h-80 sm:w-96 sm:h-96 lg:w-96 lg:h-96 mx-auto overflow-hidden">
                   <Image
                     src="/img/kazi.jpeg"
                     alt="Kazi Tanvir"
-                    width={600}
-                    height={600}
-                    className="rounded-xl w-full"
+                    fill
+                    className="object-cover object-center rounded-xl"
                     priority
                   />
                 </div>

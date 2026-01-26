@@ -100,16 +100,15 @@ export default function HeroSection() {
           <div className="order-1 lg:order-2">
             <div className="relative max-w-md mx-auto lg:max-w-none">
               {/* Background Shape */}
-              <div className="absolute inset-0 bg-linear-to-br from-purple-600 to-indigo-600 rounded-xl sm:rounded-2xl transform rotate-6"></div>
+              <div className="absolute w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 bg-linear-to-br from-purple-600 to-indigo-600 rounded-xl sm:rounded-2xl transform rotate-6 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
               
-              {/* Image Container */}
-              <div className="relative bg-white p-1.5 sm:p-2 rounded-xl sm:rounded-2xl shadow-2xl">
+              {/* Image Container (fixed size, cropped & centered) */}
+              <div className="relative bg-white p-1.5 sm:p-2 rounded-xl sm:rounded-2xl shadow-2xl w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 mx-auto overflow-hidden">
                 <Image
                   src="/img/kazi.jpeg"
                   alt="Kazi Tanvir"
-                  width={500}
-                  height={500}
-                  className="rounded-lg sm:rounded-xl w-full"
+                  fill
+                  className="object-cover object-center rounded-lg sm:rounded-xl"
                   priority
                 />
               </div>
