@@ -3,6 +3,10 @@ import Footer from '../components/Footer';
 import ProjectCard from '../components/ProjectCard';
 import clientPromise from '@/lib/mongodb';
 
+// Force dynamic rendering to ensure data is fetched on each request
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface Project {
   _id: string;
   title: string;

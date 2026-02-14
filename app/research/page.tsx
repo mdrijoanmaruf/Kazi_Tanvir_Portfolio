@@ -5,6 +5,10 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import clientPromise from '@/lib/mongodb';
 
+// Force dynamic rendering to ensure data is fetched on each request
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface Research {
   _id: string;
   title: string;
