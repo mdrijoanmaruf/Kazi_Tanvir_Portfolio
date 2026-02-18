@@ -127,7 +127,7 @@ export function SkeletonAdminTable({ rows = 5, columns = 4 }: { rows?: number; c
 
 export function SkeletonHero() {
   return (
-    <section className="relative pt-32 pb-20 bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-800 overflow-hidden">
+    <section className="relative pt-32 pb-20 bg-linear-to-br from-purple-900 via-indigo-900 to-purple-800 overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl"></div>

@@ -20,7 +20,7 @@ export default function MessagesLoading() {
         <div className="divide-y divide-gray-100">
           {Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="p-6 flex items-start gap-4">
-              <Skeleton className="h-12 w-12 rounded-full flex-shrink-0" />
+              <Skeleton className="h-12 w-12 rounded-full shrink-0" />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-2">
                   <Skeleton className="h-5 w-32" />

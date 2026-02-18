@@ -20,7 +20,7 @@ export default function ResearchLoading() {
         <div className="divide-y divide-gray-100">
           {Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="p-6 flex gap-6">
-              <Skeleton className="h-32 w-48 rounded-xl flex-shrink-0" />
+              <Skeleton className="h-32 w-48 rounded-xl shrink-0" />
               <div className="flex-1">
                 <Skeleton className="h-6 w-3/4 mb-2" />
                 <Skeleton className="h-4 w-32 mb-3" />

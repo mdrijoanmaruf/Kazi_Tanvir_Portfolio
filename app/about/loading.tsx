@@ -19,7 +19,7 @@ export default function AboutLoading() {
       </header>
 
       {/* Banner Section Skeleton */}
-      <section className="relative bg-gradient-to-br from-gray-50 via-purple-50 to-indigo-50 pt-32 pb-20 overflow-hidden">
+      <section className="relative bg-linear-to-br from-gray-50 via-purple-50 to-indigo-50 pt-32 pb-20 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <div className="text-center">
             <Skeleton className="h-4 w-32 mx-auto mb-4" />
