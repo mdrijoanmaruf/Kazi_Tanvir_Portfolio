@@ -19,7 +19,7 @@ export default function ResearchLoading() {
       </header>
 
       {/* Hero Section Skeleton */}
-      <section className="pt-32 pb-16 px-4 bg-gradient-to-br from-purple-700 via-indigo-700 to-purple-800">
+      <section className="pt-32 pb-16 px-4 bg-linear-to-br from-purple-700 via-indigo-700 to-purple-800">
         <div className="max-w-6xl mx-auto text-center">
           <Skeleton className="h-12 w-80 mx-auto mb-4 bg-purple-600/50" />
           <Skeleton className="h-6 w-96 max-w-full mx-auto bg-purple-600/50" />

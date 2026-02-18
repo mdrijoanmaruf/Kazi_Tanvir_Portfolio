@@ -19,7 +19,7 @@ export default function HomeLoading() {
       </header>
 
       {/* Hero Section Skeleton */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-50 via-white to-indigo-50">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-linear-to-br from-purple-50 via-white to-indigo-50">
         <div className="relative z-10 text-center px-4">
           <Skeleton className="h-6 w-48 mx-auto mb-6 rounded-full" />
           <Skeleton className="h-16 w-80 mx-auto mb-4" />
