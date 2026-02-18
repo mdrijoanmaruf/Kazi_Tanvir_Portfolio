@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Swal from 'sweetalert2';
+import { Skeleton, SkeletonTableRow } from '../../components/Skeleton';
 
 interface User {
   _id: string;
@@ -195,9 +196,40 @@ export default function UsersPage() {
       {/* Users Table */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center">
-            <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-            <p className="text-gray-500 mt-4">Loading users...</p>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th className="px-6 py-4 text-left"><Skeleton className="h-4 w-16" /></th>
+                  <th className="px-6 py-4 text-left"><Skeleton className="h-4 w-12" /></th>
+                  <th className="px-6 py-4 text-left"><Skeleton className="h-4 w-16" /></th>
+                  <th className="px-6 py-4 text-right"><Skeleton className="h-4 w-16 ml-auto" /></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <tr key={i}>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <Skeleton className="h-10 w-10 rounded-full" />
+                        <div>
+                          <Skeleton className="h-4 w-32 mb-1" />
+                          <Skeleton className="h-3 w-40" />
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4"><Skeleton className="h-6 w-16 rounded-full" /></td>
+                    <td className="px-6 py-4"><Skeleton className="h-4 w-24" /></td>
+                    <td className="px-6 py-4">
+                      <div className="flex justify-end gap-2">
+                        <Skeleton className="h-8 w-20 rounded-lg" />
+                        <Skeleton className="h-8 w-8 rounded-lg" />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         ) : filteredUsers.length === 0 ? (
           <div className="p-8 text-center">

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
+import { Skeleton } from '../../components/Skeleton';
 
 interface Message {
   _id: string;
@@ -110,8 +111,42 @@ export default function Messages() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Loading messages...</div>
+      <div>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <Skeleton className="h-8 w-32 mb-2" />
+            <Skeleton className="h-5 w-64" />
+          </div>
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-10 w-24 rounded-lg" />
+            <Skeleton className="h-10 w-24 rounded-lg" />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-1 bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div className="p-4 bg-gray-50 border-b border-gray-200">
+              <Skeleton className="h-5 w-16" />
+            </div>
+            <div className="divide-y divide-gray-200">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="p-4">
+                  <div className="flex items-start justify-between mb-2">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-3 w-16" />
+                  </div>
+                  <Skeleton className="h-3 w-40 mb-1" />
+                  <Skeleton className="h-3 w-full" />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-8">
+            <div className="text-center">
+              <Skeleton className="h-16 w-16 rounded-xl mx-auto mb-4" />
+              <Skeleton className="h-5 w-48 mx-auto" />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

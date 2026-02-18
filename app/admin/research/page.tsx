@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
+import { Skeleton } from '../../components/Skeleton';
 
 interface Research {
   _id: string;
@@ -127,9 +128,26 @@ export default function ResearchPage() {
       {/* Research List */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
         {loading ? (
-          <div className="text-center py-8">
-            <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-            <p className="text-gray-500 mt-4">Loading research...</p>
+          <div className="space-y-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="border border-gray-200 rounded-xl p-5">
+                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                  <div className="flex-1">
+                    <Skeleton className="h-6 w-3/4 mb-2" />
+                    <Skeleton className="h-4 w-full mb-1" />
+                    <Skeleton className="h-4 w-2/3 mb-3" />
+                    <div className="flex flex-wrap items-center gap-3">
+                      <Skeleton className="h-6 w-24 rounded-full" />
+                      <Skeleton className="h-6 w-32 rounded-full" />
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Skeleton className="h-9 w-20 rounded-lg" />
+                    <Skeleton className="h-9 w-20 rounded-lg" />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         ) : research.length === 0 ? (
           <div className="text-center py-12">

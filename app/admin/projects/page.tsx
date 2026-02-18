@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Swal from 'sweetalert2';
+import { Skeleton } from '../../components/Skeleton';
 
 interface Project {
   _id: string;
@@ -125,9 +126,20 @@ export default function ProjectsPage() {
       {/* Projects Grid */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
         {loading ? (
-          <div className="text-center py-8">
-            <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-            <p className="text-gray-500 mt-4">Loading projects...</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="bg-gray-50 rounded-xl overflow-hidden">
+                <Skeleton className="h-40 w-full rounded-none" />
+                <div className="p-4">
+                  <Skeleton className="h-5 w-3/4 mb-2" />
+                  <Skeleton className="h-4 w-24 mb-3" />
+                  <div className="flex gap-2">
+                    <Skeleton className="h-8 w-16 rounded-lg" />
+                    <Skeleton className="h-8 w-16 rounded-lg" />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         ) : projects.length === 0 ? (
           <div className="text-center py-12">

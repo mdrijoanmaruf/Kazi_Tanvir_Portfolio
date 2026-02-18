@@ -64,6 +64,7 @@ export const authConfig = {
       }
       return session;
     },
+
   },
   pages: {
     signIn: '/login',

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
+import { Skeleton } from '../../components/Skeleton';
 
 interface Subscriber {
   _id: string;
@@ -81,8 +82,43 @@ export default function Subscribers() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Loading subscribers...</div>
+      <div>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <Skeleton className="h-8 w-40 mb-2" />
+            <Skeleton className="h-5 w-56" />
+          </div>
+          <Skeleton className="h-10 w-24 rounded-lg" />
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <table className="w-full">
+            <thead className="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th className="px-6 py-4 text-left"><Skeleton className="h-4 w-16" /></th>
+                <th className="px-6 py-4 text-left"><Skeleton className="h-4 w-28" /></th>
+                <th className="px-6 py-4 text-right"><Skeleton className="h-4 w-16 ml-auto" /></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <tr key={i}>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <Skeleton className="h-10 w-10 rounded-full" />
+                      <Skeleton className="h-4 w-48" />
+                    </div>
+                  </td>
+                  <td className="px-6 py-4"><Skeleton className="h-4 w-32" /></td>
+                  <td className="px-6 py-4">
+                    <div className="flex justify-end">
+                      <Skeleton className="h-9 w-20 rounded-lg" />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   }

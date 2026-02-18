@@ -2,6 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { Skeleton, SkeletonStatCard } from '../components/Skeleton';
 
 interface Stats {
   totalUsers: number;
@@ -120,7 +121,7 @@ export default function AdminDashboard() {
               <div>
                 <p className="text-sm font-medium text-gray-600">{stat.title}</p>
                 {loading ? (
-                  <div className="h-8 w-16 bg-gray-200 rounded animate-pulse mt-1"></div>
+                  <Skeleton className="h-8 w-16 mt-1" />
                 ) : (
                   <p className="text-3xl font-bold text-gray-900 mt-1">{stat.value}</p>
                 )}
